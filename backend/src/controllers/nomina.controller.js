@@ -3,6 +3,36 @@ const NominaModel = require('../models/nomina.model');
 const { generarPDF } = require('../utils/pdf.utils'); // Implementaremos esto después
 
 class NominaController {
+
+   /**
+   * Obtiene todas las nóminas (para administradores)
+   * @param {Request} req - Objeto de solicitud Express
+   * @param {Response} res - Objeto de respuesta Express
+   */
+  static async getAllNominas(req, res) {
+    try {
+      const { fechaInicio, fechaFin, tipo, empleadoId, limite } = req.query;
+      
+      const nominas = await NominaModel.getAllNominas({
+        fechaInicio,
+        fechaFin,
+        tipo,
+        empleadoId,
+        limite
+      });
+      
+      res.json({
+        error: false,
+        data: nominas
+      });
+    } catch (error) {
+      console.error('Error al obtener todas las nóminas:', error);
+      res.status(500).json({
+        error: true,
+        message: 'Error al obtener nóminas'
+      });
+    }
+  }
   /**
    * Calcula la nómina para el período indicado según el tipo
    * @param {Request} req - Objeto de solicitud Express

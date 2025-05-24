@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/periodos-sugeridos', verifyToken, NominaController.getPeriodosSugeridos);
 router.get('/empleado/:id', verifyToken, NominaController.getNominasByEmpleado);
 router.get('/periodo', verifyToken, isAdmin, NominaController.getNominasByPeriodo);
+router.get('/', verifyToken, isAdmin, NominaController.getAllNominas);
 router.get('/:id', verifyToken, NominaController.getNominaById);
 router.get('/:id/pdf', verifyToken, NominaController.generarReciboPDF);
 router.post('/calcular', verifyToken, isAdmin, NominaController.calcularNomina);

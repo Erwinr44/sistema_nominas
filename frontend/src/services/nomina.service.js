@@ -1,4 +1,4 @@
-// src/services/nomina.service.js
+// src/services/nomina.service.js (archivo completo)
 import api from './api';
 
 class NominaService {
@@ -13,6 +13,34 @@ class NominaService {
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Error al calcular nómina');
+    }
+  }
+
+  /**
+   * Obtener todas las nóminas (para administradores)
+   * @param {Object} params - Parámetros de consulta
+   * @returns {Promise<Array>} - Lista de nóminas
+   */
+  static async getAll(params = {}) {
+    try {
+      const response = await api.get('/nominas', { params });
+      return response.data.data || response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener nóminas');
+    }
+  }
+
+  /**
+   * Obtener nóminas por período
+   * @param {Object} params - Parámetros del período
+   * @returns {Promise<Object>} - Nóminas del período
+   */
+  static async getByPeriodo(params) {
+    try {
+      const response = await api.get('/nominas/periodo', { params });
+      return response.data.data || response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener nóminas del período');
     }
   }
 

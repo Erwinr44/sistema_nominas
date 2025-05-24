@@ -3,6 +3,71 @@ const { pool } = require('../database/connection');
 const moment = require('moment');
 
 class NominaModel {
+
+  /**
+   * Obtiene todas las nóminas con filtros opcionales
+   * @param {Object} filtros - Filtros para las nóminas
+   * @returns {Promise<Array>} - Lista de nóminas
+   */
+  static async getAllNominas(filtros = {}) {
+    try {
+      let query = `
+        SELECT n.*, 
+               e.nombre, e.apellido, e.numero_empleado,
+               a.nombre as area_nombre
+        FROM nominas n
+        JOIN empleados e ON n.empleado_id = e.id
+        LEFT JOIN areas a ON e.area_id = a.id
+      `;
+      
+      const params = [];
+      const condiciones = [];
+      
+      // Filtrar por empleado
+      if (filtros.empleadoId) {
+        condiciones.push('n.empleado_id = ?');
+        params.push(filtros.empleadoId);
+      }
+      
+      // Filtrar por tipo
+      if (filtros.tipo) {
+        condiciones.push('n.tipo = ?');
+        params.push(filtros.tipo);
+      }
+      
+      // Filtrar por fechas
+      if (filtros.fechaInicio) {
+        condiciones.push('n.fecha_inicio >= ?');
+        params.push(filtros.fechaInicio);
+      }
+      
+      if (filtros.fechaFin) {
+        condiciones.push('n.fecha_fin <= ?');
+        params.push(filtros.fechaFin);
+      }
+      
+      // Agregar todas las condiciones a la consulta
+      if (condiciones.length > 0) {
+        query += ' WHERE ' + condiciones.join(' AND ');
+      }
+      
+      // Ordenar por fecha de procesamiento (más recientes primero)
+      query += ' ORDER BY n.fecha_procesamiento DESC';
+      
+      // Agregar límite si existe
+      if (filtros.limite) {
+        query += ' LIMIT ?';
+        params.push(parseInt(filtros.limite));
+      }
+      
+      // Ejecutar la consulta
+      const [nominas] = await pool.query(query, params);
+      return nominas;
+    } catch (error) {
+      console.error('Error al obtener todas las nóminas:', error);
+      throw error;
+    }
+  }
   /**
    * Calcula la nómina quincenal para todos los empleados correspondientes
    * @param {string} fechaInicio - Fecha de inicio del período
