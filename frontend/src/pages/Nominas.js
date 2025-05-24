@@ -1,4 +1,3 @@
-// src/pages/Nominas.js (archivo completo corregido)
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import NominaService from '../services/nomina.service';
@@ -84,19 +83,19 @@ const Nominas = () => {
   const [periodosSugeridos, setPeriodosSugeridos] = useState(null);
   const [loadingPeriodos, setLoadingPeriodos] = useState(false);
 
-  // Función para cargar datos usando useCallback
+  // carga de datos
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
       
-      // Preparar parámetros de filtro
+      // filtros
       const params = {};
       if (filtros.tipo) params.tipo = filtros.tipo;
       if (filtros.fechaInicio) params.fechaInicio = filtros.fechaInicio.format('YYYY-MM-DD');
       if (filtros.fechaFin) params.fechaFin = filtros.fechaFin.format('YYYY-MM-DD');
       
-      // Usar el endpoint de período si hay filtros de fecha, sino obtener todas
+      // endpoint
       const data = (filtros.fechaInicio || filtros.fechaFin) 
         ? await NominaService.getByPeriodo(params)
         : await NominaService.getAll(params);
@@ -121,7 +120,6 @@ const Nominas = () => {
     }
   };
 
-  // Función para calcular estadísticas usando useCallback
   const calculateStats = useCallback(() => {
     const totalNominas = nominas.length;
     const empleadosUnicos = new Set(nominas.map(n => n.empleado_id)).size;
@@ -497,13 +495,11 @@ const Nominas = () => {
           
           <Box sx={{ p: 2 }}>
             <TablaNominas
-              nominas={getNominasFiltradas()}
+              nominas={nominas}
               onMarcarPagada={handleMarcarPagada}
               onVerDetalle={handleVerDetalle}
-              onDescargarPDF={handleDescargarPDF}
               loading={loading}
-              groupByPeriod={filtros.groupByPeriod}
-            />
+          />
           </Box>
         </Paper>
 

@@ -1,4 +1,3 @@
-// src/models/liquidacion.model.js
 const { pool } = require('../database/connection');
 
 class LiquidacionModel {

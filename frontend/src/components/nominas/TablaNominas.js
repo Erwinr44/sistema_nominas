@@ -1,4 +1,3 @@
-// src/components/nominas/TablaNominas.js
 import React, { useState } from 'react';
 import {
   Table,
@@ -35,12 +34,14 @@ import {
   Schedule
 } from '@mui/icons-material';
 import dayjs from '../../utils/dayjs';
+import NominaService from '../../services/nomina.service';
 
-const TablaNominas = ({ nominas, onMarcarPagada, onVerDetalle, onDescargarPDF, loading, groupByPeriod = false }) => {
+const TablaNominas = ({ nominas, onMarcarPagada, onVerDetalle, loading, groupByPeriod = false }) => {
   const [selectedNomina, setSelectedNomina] = useState(null);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
   const [expandedPeriods, setExpandedPeriods] = useState({});
+  const [downloadingPDF, setDownloadingPDF] = useState({});
 
   const formatDate = (dateString) => {
     return dayjs(dateString).format('DD/MM/YYYY');
@@ -91,6 +92,28 @@ const TablaNominas = ({ nominas, onMarcarPagada, onVerDetalle, onDescargarPDF, l
     }
   };
 
+
+  const handleDescargarPDF = async (nomina) => {
+    const nominaId = nomina.id;
+    
+    try {
+      setDownloadingPDF(prev => ({ ...prev, [nominaId]: true }));
+
+      await NominaService.descargarReciboPDF(
+        nominaId,
+        nomina.nombre,
+        nomina.apellido,
+        `${nomina.fecha_inicio}_${nomina.fecha_fin}`,
+        false 
+      );
+
+    } catch (error) {
+      console.error('Error en componente al descargar PDF:', error);
+    } finally {
+      setDownloadingPDF(prev => ({ ...prev, [nominaId]: false }));
+    }
+  };
+
   const togglePeriodExpansion = (periodKey) => {
     setExpandedPeriods(prev => ({
       ...prev,
@@ -98,7 +121,6 @@ const TablaNominas = ({ nominas, onMarcarPagada, onVerDetalle, onDescargarPDF, l
     }));
   };
 
-  // Agrupar nóminas por período si está habilitado
   const groupedNominas = groupByPeriod 
     ? nominas.reduce((groups, nomina) => {
         const periodKey = `${nomina.fecha_inicio}_${nomina.fecha_fin}_${nomina.tipo}`;
@@ -180,14 +202,22 @@ const TablaNominas = ({ nominas, onMarcarPagada, onVerDetalle, onDescargarPDF, l
             </IconButton>
           </Tooltip>
           
+          {/* Botón de descarga PDF con estado de carga */}
           <Tooltip title="Descargar recibo PDF">
-            <IconButton
-              color="secondary"
-              onClick={() => onDescargarPDF(nomina.id, `${nomina.nombre}-${nomina.apellido}`)}
-              size="small"
-            >
-              <GetApp />
-            </IconButton>
+            <span>
+              <IconButton
+                color="secondary"
+                onClick={() => handleDescargarPDF(nomina)}
+                size="small"
+                disabled={downloadingPDF[nomina.id]}
+              >
+                {downloadingPDF[nomina.id] ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <GetApp />
+                )}
+              </IconButton>
+            </span>
           </Tooltip>
           
           {nomina.estado === 'procesada' && (

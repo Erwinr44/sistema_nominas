@@ -1,4 +1,3 @@
-// src/components/empleados/FiltrosEmpleados.js
 import React from 'react';
 import {
   Box,

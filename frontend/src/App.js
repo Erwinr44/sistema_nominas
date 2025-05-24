@@ -1,15 +1,17 @@
-// src/App.js (reemplaza el contenido actual)
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { AuthProvider } from './contexts/AuthContext';
 
+// AGREGADO: Importaciones para ToastContainer
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Componentes
 import Login from './components/auth/Login';
 import Layout from './components/common/Layout';
 import ProtectedRoute from './components/common/ProtectedRoute';
-
 // Páginas
 import Dashboard from './pages/Dashboard';
 import Empleados from './pages/Empleados';
@@ -20,7 +22,6 @@ import MisSolicitudes from './pages/MisSolicitudes';
 import Liquidaciones from './pages/Liquidaciones';
 import Organigrama from './pages/Organigrama';
 
-// Crear tema personalizado
 const theme = createTheme({
   palette: {
     primary: {
@@ -41,7 +42,6 @@ function App() {
           <Routes>
             {/* Ruta de login */}
             <Route path="/login" element={<Login />} />
-            
             {/* Rutas protegidas con layout */}
             <Route
               path="/dashboard"
@@ -53,7 +53,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             {/* Rutas para empleados */}
             <Route
               path="/mi-nomina"
@@ -65,7 +64,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             <Route
               path="/mis-solicitudes"
               element={
@@ -76,7 +74,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             {/* Rutas para administradores */}
             <Route
               path="/empleados"
@@ -88,7 +85,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             <Route
               path="/nominas"
               element={
@@ -99,7 +95,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             <Route
               path="/solicitudes"
               element={
@@ -110,7 +105,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             <Route
               path="/liquidaciones"
               element={
@@ -121,7 +115,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             {/* Rutas accesibles para todos */}
             <Route
               path="/organigrama"
@@ -133,12 +126,25 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
             {/* Redirecciones */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>
+
+        {/* AGREGADO: ToastContainer para las notificaciones de PDF */}
+        <ToastContainer 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </AuthProvider>
     </ThemeProvider>
   );

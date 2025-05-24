@@ -1,4 +1,3 @@
-// src/pages/MiNomina.js (reemplaza todo el contenido)
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import NominaService from '../services/nomina.service';
@@ -15,7 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+
   Chip,
   IconButton,
   Dialog,
@@ -207,7 +206,7 @@ const MiNomina = () => {
         {error && (
           <Alert severity="error" sx={{ mb: 3 }}>
             {error}
-          </Alert>
+          </Alert>       
         )}
 
         {/* Estadísticas */}

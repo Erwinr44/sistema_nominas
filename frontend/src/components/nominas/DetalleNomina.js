@@ -1,4 +1,3 @@
-// src/components/nominas/DetalleNomina.js
 import React from 'react';
 import {
   Dialog,

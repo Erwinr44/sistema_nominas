@@ -1,4 +1,3 @@
-// src/services/empleado.service.js
 import api from './api';
 
 class EmpleadoService {
@@ -85,7 +84,6 @@ class EmpleadoService {
       throw new Error(error.response?.data?.message || 'Error al obtener organigrama');
     }
   }
-  // src/services/empleado.service.js (agregar estos métodos al existente)
 
 /**
  * Cambiar contraseña de un empleado

@@ -1,4 +1,3 @@
-// src/components/empleados/TablaEmpleados.js
 import React, { useState } from 'react';
 import {
   Table,

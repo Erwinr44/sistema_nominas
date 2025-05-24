@@ -1,4 +1,3 @@
-// src/components/liquidaciones/TablaLiquidaciones.js
 import React, { useState } from 'react';
 import {
   Table,
@@ -95,9 +94,9 @@ const TablaLiquidaciones = ({ liquidaciones, onMarcarPagada, onVerResumen, onDes
     if (liquidacion.estado === 'pagada') return 'success';
     
     const dias = getDiasPendientes(liquidacion.fecha_procesamiento);
-    if (dias >= 30) return 'error'; // Más de 30 días - urgente
-    if (dias >= 15) return 'warning'; // 15-30 días - importante
-    return 'info'; // Menos de 15 días - normal
+    if (dias >= 30) return 'error';
+    if (dias >= 15) return 'warning';
+    return 'info';
   };
 
   if (loading) {

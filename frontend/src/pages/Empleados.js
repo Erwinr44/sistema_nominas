@@ -1,4 +1,3 @@
-// src/pages/Empleados.js (reemplaza todo el contenido)
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import EmpleadoService from '../services/empleado.service';
@@ -227,7 +226,7 @@ const Empleados = () => {
   };
 
   const handleSuccess = () => {
-    loadData(); // Recargar datos después de operaciones exitosas
+    loadData();
     handleCloseModals();
   };
 

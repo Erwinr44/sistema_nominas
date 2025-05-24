@@ -1,4 +1,3 @@
-// src/components/organigrama/TarjetaArea.js
 import React, { useState } from 'react';
 import {
   Card,

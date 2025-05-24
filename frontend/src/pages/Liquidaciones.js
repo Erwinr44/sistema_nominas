@@ -1,4 +1,3 @@
-// src/pages/Liquidaciones.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import LiquidacionService from '../services/liquidacion.service';

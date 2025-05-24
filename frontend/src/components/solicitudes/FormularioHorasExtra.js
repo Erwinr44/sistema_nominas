@@ -1,4 +1,3 @@
-// src/components/solicitudes/FormularioHorasExtra.js
 import React, { useState } from 'react';
 import {
   Dialog,

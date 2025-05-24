@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.css-190u03h-MuiPaper-root {
+   background-color: #f1f1f1;
+   border-radius: 5px;
+}
+
+
+  .MuiAlert-root {
+    display: none !important;
+  }
+

@@ -1,4 +1,3 @@
-// src/components/nominas/FormularioCalcularNomina.js
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,
@@ -98,7 +97,7 @@ const FormularioCalcularNomina = ({ open, onClose, onSuccess }) => {
 
       const diasDiferencia = dayjs(formData.fechaFin).diff(formData.fechaInicio, 'day') + 1;
       
-      // Validaciones específicas por tipo
+ 
       if (formData.tipo === 'semanal' && diasDiferencia !== 7) {
         newErrors.fechaFin = 'Para nómina semanal, el período debe ser exactamente de 7 días';
       } else if (formData.tipo === 'quincenal' && (diasDiferencia < 14 || diasDiferencia > 16)) {

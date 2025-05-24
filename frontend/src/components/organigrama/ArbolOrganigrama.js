@@ -1,4 +1,3 @@
-// src/components/organigrama/ArbolOrganigrama.js
 import React from 'react';
 import {
   Box,
@@ -16,7 +15,7 @@ const ArbolOrganigrama = ({
   onEditArea,
   onDeleteArea 
 }) => {
-  // Filtrar empleados según criterios de búsqueda
+  // Filtrar empleados
   const filteredEmpleados = empleados.filter(emp => {
     const matchesSearch = !searchTerm || 
       `${emp.nombre} ${emp.apellido}`.toLowerCase().includes(searchTerm.toLowerCase());
@@ -26,7 +25,7 @@ const ArbolOrganigrama = ({
     return matchesSearch && matchesArea;
   });
 
-  // Filtrar áreas que tienen empleados visibles o no hay filtros
+  // Filtrar áreas
   const getVisibleAreas = () => {
     if (!searchTerm && !selectedArea) {
       return areas;
@@ -47,13 +46,12 @@ const ArbolOrganigrama = ({
       }
     });
 
-    // Si se seleccionó un área específica, mostrar toda su jerarquía
+  
     if (selectedArea) {
       const selected = areas.find(a => a.id === parseInt(selectedArea));
       if (selected) {
         visibleAreaIds.add(selected.id);
         
-        // Agregar sub-áreas
         const addSubAreas = (parentId) => {
           areas.filter(a => a.area_padre_id === parentId).forEach(subArea => {
             visibleAreaIds.add(subArea.id);
@@ -70,7 +68,6 @@ const ArbolOrganigrama = ({
   const visibleAreas = getVisibleAreas();
   const rootAreas = visibleAreas.filter(area => !area.area_padre_id);
 
-  // Si hay filtros de búsqueda y hay empleados sin área asignada
   const empleadosSinArea = filteredEmpleados.filter(emp => !emp.area_id);
 
   if (visibleAreas.length === 0 && filteredEmpleados.length === 0) {

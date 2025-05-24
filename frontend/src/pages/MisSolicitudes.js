@@ -1,4 +1,3 @@
-// src/pages/MisSolicitudes.js (reemplaza todo el contenido)
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import SolicitudService from '../services/solicitud.service';
@@ -103,15 +102,11 @@ const MisSolicitudes = () => {
 
   const handleSolicitudCreated = () => {
     loadSolicitudes();
-    loadVacacionesInfo(); // Actualizar vacaciones disponibles
+    loadVacacionesInfo();
   };
 
   const handleDeleteSolicitud = async (solicitudId) => {
     try {
-      // Aquí llamaríamos al servicio para eliminar la solicitud
-      // await SolicitudService.delete(solicitudId);
-      
-      // Por ahora, simplemente recargar la lista
       await loadSolicitudes();
     } catch (err) {
       setError(err.message);

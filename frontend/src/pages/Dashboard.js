@@ -1,4 +1,3 @@
-// src/pages/Dashboard.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import {
@@ -27,13 +26,11 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    // Aquí cargarías las estadísticas desde la API
-    // Por ahora, usamos datos simulados
     setStats({
-      empleados: 125,
-      nominasDelMes: 45,
-      solicitudesPendientes: 8,
-      liquidacionesDelMes: 2
+      empleados: 8,
+      nominasDelMes: 16,
+      solicitudesPendientes: 3,
+      liquidacionesDelMes: 1
     });
   }, []);
 
@@ -112,17 +109,6 @@ const Dashboard = () => {
             />
           </Grid>
 
-          <Grid item xs={12}>
-            <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Resumen del Sistema
-              </Typography>
-              <Typography variant="body1">
-                El sistema de nómina está funcionando correctamente. Todas las funcionalidades 
-                están disponibles desde el menú lateral.
-              </Typography>
-            </Paper>
-          </Grid>
         </Grid>
       ) : (
         // Dashboard para empleados

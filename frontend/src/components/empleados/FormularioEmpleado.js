@@ -1,4 +1,3 @@
-// src/components/empleados/FormularioEmpleado.js
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,

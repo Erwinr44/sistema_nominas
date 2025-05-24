@@ -23,7 +23,6 @@ const Login = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // Si ya está autenticado, redirigir al dashboard
   if (isAuthenticated()) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -120,15 +119,6 @@ const Login = () => {
                   'Iniciar Sesión'
                 )}
               </Button>
-            </Box>
-
-            {/* Credenciales de prueba para desarrollo */}
-            <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1, width: '100%' }}>
-              <Typography variant="caption" color="text.secondary">
-                <strong>Credenciales de prueba:</strong><br />
-                Admin: admin@empresa.com / 123456<br />
-                Usuario: usuario@empresa.com / 123456
-              </Typography>
             </Box>
           </Box>
         </Paper>

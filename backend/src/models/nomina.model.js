@@ -1,4 +1,4 @@
-// src/models/nomina.model.js
+// src/models/nomina.model.js - ARCHIVO COMPLETO ACTUALIZADO
 const { pool } = require('../database/connection');
 const moment = require('moment');
 
@@ -68,6 +68,7 @@ class NominaModel {
       throw error;
     }
   }
+
   /**
    * Calcula la nómina quincenal para todos los empleados correspondientes
    * @param {string} fechaInicio - Fecha de inicio del período
@@ -265,6 +266,52 @@ class NominaModel {
       throw error;
     }
   }
+
+/**
+ * MÉTODO CORREGIDO - Usa las columnas que realmente existen en tu BD
+ */
+static async getNominaConDatos(nominaId) {
+  try {
+    console.log('Obteniendo datos completos para nómina:', nominaId);
+    
+    const [rows] = await pool.query(`
+      SELECT 
+        n.*,
+        e.nombre,
+        e.apellido,
+        e.numero_empleado,
+        e.email,
+        e.dpi,
+        e.fecha_nacimiento,
+        e.fecha_contratacion,
+        e.salario_base as empleado_salario_base,
+        e.tipo_nomina as empleado_tipo_nomina,
+        a.nombre as area_nombre
+      FROM nominas n
+      INNER JOIN empleados e ON n.empleado_id = e.id
+      LEFT JOIN areas a ON e.area_id = a.id
+      WHERE n.id = ?
+    `, [nominaId]);
+    
+    const resultado = rows[0] || null;
+    
+    console.log('Datos obtenidos para PDF:', {
+      encontrado: !!resultado,
+      empleado: resultado ? `${resultado.nombre} ${resultado.apellido}` : 'N/A',
+      email: resultado ? resultado.email : 'N/A',
+      dpi: resultado ? resultado.dpi : 'N/A',
+      fechaContratacion: resultado ? resultado.fecha_contratacion : 'N/A',
+      periodo: resultado ? `${resultado.fecha_inicio} - ${resultado.fecha_fin}` : 'N/A',
+      totalNeto: resultado ? resultado.total_neto : 'N/A'
+    });
+    
+    return resultado;
+    
+  } catch (error) {
+    console.error('Error al obtener nómina con datos completos:', error);
+    throw error;
+  }
+}
   
   /**
    * Marca una nómina como pagada

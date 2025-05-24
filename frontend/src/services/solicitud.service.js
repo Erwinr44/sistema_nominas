@@ -1,4 +1,3 @@
-// CORREGIDO - src/services/solicitud.service.js
 import api from './api';
 
 class SolicitudService {

@@ -1,4 +1,3 @@
-// src/components/organigrama/BuscadorOrganigrama.js
 import React from 'react';
 import {
   Box,

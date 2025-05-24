@@ -1,4 +1,3 @@
-// src/services/liquidacion.service.js
 import api from './api';
 
 class LiquidacionService {
@@ -87,7 +86,7 @@ class LiquidacionService {
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       
-      // Crear un elemento <a> para descargar
+      // Crear un elemento para descargar
       const link = document.createElement('a');
       link.href = url;
       link.download = `liquidacion-${id}.pdf`;

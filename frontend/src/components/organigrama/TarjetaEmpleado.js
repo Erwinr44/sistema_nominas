@@ -1,4 +1,3 @@
-// src/components/organigrama/TarjetaEmpleado.js
 import React from 'react';
 import {
   Card,

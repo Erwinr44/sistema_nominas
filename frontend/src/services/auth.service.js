@@ -1,4 +1,3 @@
-// src/services/auth.service.js
 import api from './api';
 
 class AuthService {

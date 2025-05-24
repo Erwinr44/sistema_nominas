@@ -1,4 +1,3 @@
-// src/services/area.service.js
 import api from './api';
 
 class AreaService {

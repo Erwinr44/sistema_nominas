@@ -1,4 +1,3 @@
-// src/components/liquidaciones/ResumenLiquidacion.js
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,

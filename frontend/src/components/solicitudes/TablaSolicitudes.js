@@ -1,4 +1,3 @@
-// src/components/solicitudes/TablaSolicitudes.js
 import React, { useState } from 'react';
 import {
   Table,

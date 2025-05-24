@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.css-190u03h-MuiPaper-root {
+   background-color: #f1f1f1;
+   border-radius: 5px;
+}
+
+
+  .MuiAlert-root {
+    display: none !important;
+  }
+

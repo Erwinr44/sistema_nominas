@@ -1,6 +1,5 @@
-// src/controllers/liquidacion.controller.js
 const LiquidacionModel = require('../models/liquidacion.model');
-const { generarPDFLiquidacion } = require('../utils/pdf.utils'); // Implementaremos esto después
+const { generarPDFLiquidacion } = require('../utils/pdf.utils');
 
 class LiquidacionController {
   /**
@@ -194,32 +193,89 @@ class LiquidacionController {
   }
   
   /**
-   * Genera un PDF con el finiquito de liquidación
-   * @param {Request} req - Objeto de solicitud Express
-   * @param {Response} res - Objeto de respuesta Express
-   */
-  static async generarFiniquitoPDF(req, res) {
-    try {
-      const { id } = req.params;
-      
-      // Obtener resumen de la liquidación
-      const resumen = await LiquidacionModel.getResumenLiquidacion(id);
-      
-      // Generar PDF (implementaremos esta función después)
-      const pdfBuffer = await generarPDFLiquidacion(resumen);
-      
-      // Enviar PDF como respuesta
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename=liquidacion-${id}.pdf`);
-      res.send(pdfBuffer);
-    } catch (error) {
-      console.error('Error al generar PDF de liquidación:', error);
-      res.status(500).json({
+ * Genera un PDF con el finiquito de liquidación
+ * @param {Request} req - Objeto de solicitud Express
+ * @param {Response} res - Objeto de respuesta Express
+ */
+static async generarFiniquitoPDF(req, res) {
+  try {
+    const { id } = req.params;
+    
+    console.log('=== DEBUG PDF ===');
+    console.log('1. ID de liquidación:', id);
+    console.log('2. Usuario:', req.usuario?.id);
+    
+    // Verificar que la liquidación existe
+    const liquidacion = await LiquidacionModel.getById(id);
+    if (!liquidacion) {
+      console.log('3. ERROR: Liquidación no encontrada');
+      return res.status(404).json({
         error: true,
-        message: 'Error al generar PDF'
+        message: 'Liquidación no encontrada'
       });
     }
+    
+    console.log('3. Liquidación encontrada:', {
+      id: liquidacion.id,
+      empleado_id: liquidacion.empleado_id,
+      estado: liquidacion.estado
+    });
+    
+    // Obtener resumen de la liquidación
+    console.log('4. Obteniendo resumen...');
+    const resumen = await LiquidacionModel.getResumenLiquidacion(id);
+    
+    console.log('5. Resumen obtenido:', {
+      tieneEmpleado: !!resumen?.empleado,
+      tieneDetalles: !!resumen?.detalles,
+      tieneLiquidacion: !!resumen?.liquidacion
+    });
+    
+    // Verificar estructura del resumen
+    if (!resumen || !resumen.empleado) {
+      console.log('6. ERROR: Estructura de resumen inválida');
+      return res.status(500).json({
+        error: true,
+        message: 'Error en la estructura de datos de liquidación'
+      });
+    }
+    
+    console.log('6. Generando PDF...');
+    
+    // Generar PDF
+    const pdfBuffer = await generarPDFLiquidacion(resumen);
+    
+    console.log('7. PDF generado exitosamente, tamaño:', pdfBuffer.length, 'bytes');
+    
+    // Enviar PDF como respuesta
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=liquidacion-${id}.pdf`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    
+    res.send(pdfBuffer);
+    
+    console.log('8. PDF enviado al cliente');
+    console.log('=== FIN DEBUG PDF ===');
+    
+  } catch (error) {
+    console.error('=== ERROR EN PDF ===');
+    console.error('Error completo:', error);
+    console.error('Stack trace:', error.stack);
+    console.error('Mensaje:', error.message);
+    console.error('=== FIN ERROR PDF ===');
+    
+    // Si ya se enviaron headers, no podemos enviar JSON
+    if (res.headersSent) {
+      return res.end();
+    }
+    
+    res.status(500).json({
+      error: true,
+      message: 'Error al generar PDF',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
+}
 }
 
 module.exports = LiquidacionController;

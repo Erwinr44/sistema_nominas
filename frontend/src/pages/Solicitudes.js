@@ -1,4 +1,3 @@
-// src/pages/Solicitudes.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import SolicitudService from '../services/solicitud.service';
